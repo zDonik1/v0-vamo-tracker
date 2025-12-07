@@ -1,5 +1,4 @@
 import { EvidenceGrid } from "@/components/evidence-grid"
-import { ChatAgent } from "@/components/chat-agent"
 import { DailyTaskCard } from "@/components/daily-task-card"
 import { UnlockCustomersCard } from "@/components/unlock-customers-card"
 import { OnboardingModal } from "@/components/onboarding-modal"
@@ -29,11 +28,6 @@ export default function HomePage() {
               Get 10 paying customers in 100 days, and unlock the{" "}
               <span className="font-semibold text-foreground">$100K prize</span>
             </p>
-          </div>
-
-          {/* Chat Agent */}
-          <div className="max-w-2xl mx-auto mb-16">
-            <ChatAgent />
           </div>
 
           <div className="grid md:grid-cols-2 gap-6 mb-16">
