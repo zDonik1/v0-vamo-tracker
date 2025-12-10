@@ -129,24 +129,24 @@ The colors help you visually scan and see which leads are "hot" (green/yellow) v
 ### Installation
 
 1. **Clone the repository**
-\`\`\`bash
+```bash
 git clone <your-repo-url>
 cd vamo
-\`\`\`
+```
 
 2. **Install dependencies**
-\`\`\`bash
+```bash
 npm install
 # or
 yarn install
-\`\`\`
+```
 
 3. **Run the development server**
-\`\`\`bash
+```bash
 npm run dev
 # or
 yarn dev
-\`\`\`
+```
 
 4. **Open your browser**
 Navigate to [http://localhost:3000](http://localhost:3000)
@@ -180,7 +180,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 📁 Project Structure
 
-\`\`\`
+```
 vamo/
 ├── app/
 │   ├── page.tsx              # Homepage with task cards
@@ -200,7 +200,7 @@ vamo/
 │   └── store.ts              # Zustand state management
 └── public/
     └── placeholder.svg       # Placeholder images
-\`\`\`
+```
 
 ---
 
