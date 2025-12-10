@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { useAppStore } from "@/lib/store"
 import { Calendar, Lock, Sparkles, Users, TrendingUp } from "lucide-react"
@@ -79,7 +79,9 @@ export function OnboardingModal() {
             </div>
           </div>
 
-          <h2 className="text-4xl font-bold font-serif mb-2">{currentContent.title}</h2>
+          <DialogTitle asChild>
+            <h2 className="text-4xl font-bold font-serif mb-2">{currentContent.title}</h2>
+          </DialogTitle>
           <p className="text-xl text-white/90 font-medium">{currentContent.subtitle}</p>
         </div>
 
