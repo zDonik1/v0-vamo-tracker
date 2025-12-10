@@ -48,6 +48,10 @@ interface AppState {
   dailyTaskCompleted: boolean
   hasSeenOnboarding: boolean
 
+  // Hydration state
+  _hasHydrated: boolean
+  setHasHydrated: (state: boolean) => void
+
   // Actions
   startChallenge: () => void
   addEvidence: (evidence: Omit<Evidence, "id" | "timestamp">) => void
@@ -127,6 +131,9 @@ export const useAppStore = create<AppState>()(
       findCustomersUnlocked: false,
       dailyTaskCompleted: false,
       hasSeenOnboarding: false,
+
+      _hasHydrated: false,
+      setHasHydrated: (state) => set({ _hasHydrated: state }),
 
       startChallenge: () => {
         set({
@@ -260,6 +267,12 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "vamo-storage",
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true)
+      },
     },
   ),
 )
+
+// Selector hook for checking hydration
+export const useHasHydrated = () => useAppStore((state) => state._hasHydrated)

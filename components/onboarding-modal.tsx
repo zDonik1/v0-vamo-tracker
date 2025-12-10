@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { useAppStore } from "@/lib/store"
+import { useAppStore, useHasHydrated } from "@/lib/store"
 import { Calendar, Lock, Sparkles, Users, TrendingUp } from "lucide-react"
 
 const ONBOARDING_SCREENS = [
@@ -46,32 +46,39 @@ const ONBOARDING_SCREENS = [
 
 export function OnboardingModal() {
   const { hasSeenOnboarding, completeOnboarding } = useAppStore()
+  const hasHydrated = useHasHydrated()
   const [currentScreen, setCurrentScreen] = useState(0)
   const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
-    if (!hasSeenOnboarding) {
+    if (hasHydrated && !hasSeenOnboarding) {
       setCurrentScreen(0)
       setIsOpen(true)
-    } else {
-      setIsOpen(false)
     }
-  }, [hasSeenOnboarding])
+  }, [hasSeenOnboarding, hasHydrated])
 
   const handleNext = () => {
     if (currentScreen < ONBOARDING_SCREENS.length - 1) {
       setCurrentScreen((prev) => prev + 1)
     } else {
       completeOnboarding()
+      setIsOpen(false)
     }
   }
 
   const currentContent = ONBOARDING_SCREENS[currentScreen]
   const Icon = currentContent.icon
 
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open)
+    if (!open) {
+      completeOnboarding()
+    }
+  }
+
   return (
-    <Dialog open={isOpen} onOpenChange={() => {}}>
-      <DialogContent className="max-w-2xl p-0 gap-0 overflow-hidden" onInteractOutside={(e) => e.preventDefault()}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogContent className="max-w-2xl p-0 gap-0 overflow-hidden">
         <div className={`bg-gradient-to-br ${currentContent.gradient} p-12 text-white text-center`}>
           <div className="mb-6 flex justify-center">
             <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center">

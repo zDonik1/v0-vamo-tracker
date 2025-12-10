@@ -1,14 +1,11 @@
 import { EvidenceGrid } from "@/components/evidence-grid"
 import { DailyTaskCard } from "@/components/daily-task-card"
 import { UnlockCustomersCard } from "@/components/unlock-customers-card"
-import { OnboardingModal } from "@/components/onboarding-modal"
 import { Sparkles } from "lucide-react"
 
 export default function HomePage() {
   return (
     <>
-      <OnboardingModal />
-
       <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Hero Section */}

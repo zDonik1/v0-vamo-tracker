@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { SidebarNav } from "@/components/sidebar-nav"
 import { Toaster } from "@/components/ui/toaster"
 import { HelpButton } from "@/components/help-button"
+import { OnboardingModal } from "@/components/onboarding-modal"
 import "./globals.css"
 
 // Updated fonts for warm, aspirational feel
@@ -42,6 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="font-sans antialiased">
+        <OnboardingModal />
         <SidebarNav />
         <main className="ml-64">{children}</main>
         <Toaster />
