@@ -23,7 +23,7 @@ export function EvidenceGrid() {
 
   return (
     <div className="w-full overflow-x-auto">
-      <div className="inline-grid grid-cols-20 gap-1.5 min-w-max">
+      <div className="inline-grid grid-cols-20 gap-1.5 min-w-max p-1">
         {days.map((day, i) => (
           <div
             key={i}
