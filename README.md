@@ -49,62 +49,33 @@ Vamo is a motivational web app designed specifically for first-time founders wor
 - Filter and search through your progress
 - Export and share your journey
 
-### 📊 Relationship Tags (Warmth Score)
+### 📊 Lead Conversion Probability
 
-**Know them well = 70-80%**
-- This is a warm lead, you have an existing relationship
-- They trust you already, much more likely to buy
-- Color: Green or dark green
+Each lead shows a conversion probability that combines two factors:
 
-**Talked once = 40-50%**
-- Medium warmth, there's some connection but not strong
-- They know who you are but relationship is new
-- Color: Yellow or orange
+1. **Stage** (where they are in sales process) - provides the base probability
+2. **Relationship** (how well you know them) - modifies the base probability
 
-**Don't know them = 15-25%**
-- Cold lead, no existing relationship or trust built yet
-- Hardest to convert, lowest likelihood
-- Color: Red or light red
+**📚 For detailed calculation methodology and examples, see [Lead Conversion Probability Documentation](docs/lead-conversion-probability.md)**
 
-### 📈 Stage Tags (Progress Score)
+#### Quick Reference:
 
-**Set up call = 20%**
-- Just starting, very early stage
-- Most leads drop off here
-- Color: Light gray or pale blue
+**Stages (Base Probability):**
+- Set up call: 20%
+- Discovery call: 40%
+- Demo: 60%
+- Pricing call: 80%
+- Secured: 100%
+- Did not close: 0%
 
-**Discovery call = 35-40%**
-- Made it past first contact, showing interest
-- Still early but better than setup stage
-- Color: Blue
+**Relationship Modifiers:**
+- Know them well: ×1.2 (+20% boost)
+- Talked once: ×1.0 (neutral)
+- Don't know them: ×0.8 (-20% penalty)
 
-**Demo = 55-60%**
-- Invested enough time to see a demo, serious interest
-- Over halfway there
-- Color: Purple or medium blue
+**Example:** Someone at "Demo" (60%) who you "Know well" (×1.2) = **72% conversion probability**
 
-**Pricing call = 75-80%**
-- Very close to closing, discussing money means they're serious
-- High likelihood of conversion
-- Color: Yellow-green or lime
-
-**Secured = 100%**
-- Done deal, paying customer
-- Color: Bright green
-
-**Did not close = 0%**
-- Lost the deal
-- Color: Red or gray
-
-### 🎯 How to Use Both Together
-
-The **relationship tag** tells you the baseline probability based on how well you know them.
-
-The **stage tag** tells you how far along they are in the buying process.
-
-You could even combine them: If someone is "Know them well" (70%) AND at "Demo" stage (60%), that's a very strong lead with high conversion likelihood. But if they're "Don't know them" (20%) and only at "Set up call" (20%), that's much riskier.
-
-The colors help you visually scan and see which leads are "hot" (green/yellow) versus "cold" (red/gray).
+The conversion % helps you prioritize leads and understand which ones are most likely to close.
 
 ---
 

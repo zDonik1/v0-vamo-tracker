@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react"
 import { useAppStore, type Lead } from "@/lib/store"
+import { calculateConversionProbability } from "@/lib/conversion-probability"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -359,19 +360,24 @@ export default function LeadsPage() {
                   </div>
 
                   <div className="col-span-1 text-right">
-                    <span
-                      className={`text-sm font-semibold ${
-                        statistics.relationshipConversion[lead.relationship] >= 70
-                          ? "text-emerald-600"
-                          : statistics.relationshipConversion[lead.relationship] >= 40
-                            ? "text-yellow-600"
-                            : statistics.relationshipConversion[lead.relationship] >= 20
-                              ? "text-orange-600"
-                              : "text-red-600"
-                      }`}
-                    >
-                      {statistics.relationshipConversion[lead.relationship]}%
-                    </span>
+                    {(() => {
+                      const convProb = calculateConversionProbability(lead)
+                      return (
+                        <span
+                          className={`text-sm font-semibold ${
+                            convProb >= 70
+                              ? "text-emerald-600"
+                              : convProb >= 50
+                                ? "text-yellow-600"
+                                : convProb >= 30
+                                  ? "text-orange-600"
+                                  : "text-red-600"
+                          }`}
+                        >
+                          {convProb}%
+                        </span>
+                      )
+                    })()}
                   </div>
                 </div>
               ))}
