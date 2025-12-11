@@ -7,7 +7,7 @@ export function EvidenceGrid() {
 
   // Generate grid for 100 days
   const days = Array.from({ length: 100 }, (_, i) => {
-    const date = new Date((startDate || Date.now()) + i * 24 * 60 * 60 * 1000)
+    const date = new Date(startDate + i * 24 * 60 * 60 * 1000)
     const dateString = date.toDateString()
     const count = evidence.filter((e) => new Date(e.date).toDateString() === dateString).length
     return { date: dateString, count }

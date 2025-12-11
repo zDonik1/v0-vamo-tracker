@@ -91,6 +91,24 @@ The conversion % helps you prioritize leads and understand which ones are most l
 
 ---
 
+## 🔧 Development Tools
+
+Vamo includes powerful development tools to help you test time-dependent features and manage app state during development.
+
+### Dev Tools Widget
+
+A development-only widget that appears in the bottom-right corner (purple wrench icon) providing:
+
+- **Time Travel**: Jump to any day (1-100) in the challenge to test features
+- **Fast Forward**: Skip to 5 seconds before the end of the challenge
+- **Data Reset**: Clear all localStorage and start fresh
+
+**📚 For detailed usage instructions, see [Dev Tools Documentation](docs/dev-tools.md)**
+
+The widget is automatically hidden in production builds and only appears when running `npm run dev`.
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -166,9 +184,14 @@ vamo/
 │   ├── unlock-customers-card.tsx  # Unlock progress card
 │   ├── reveal-customer-tile.tsx   # Customer reveal mechanic
 │   ├── onboarding-modal.tsx  # First-time user tutorial
+│   ├── dev-tools-widget.tsx  # Development time travel tools
 │   └── ui/                   # shadcn/ui components
 ├── lib/
-│   └── store.ts              # Zustand state management
+│   ├── store.ts              # Zustand state management
+│   └── time.ts               # Centralized time utilities with dev offset
+├── docs/
+│   ├── lead-conversion-probability.md  # Lead conversion calculation docs
+│   └── dev-tools.md          # Dev tools widget documentation
 └── public/
     └── placeholder.svg       # Placeholder images
 ```

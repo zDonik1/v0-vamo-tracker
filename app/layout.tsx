@@ -6,6 +6,7 @@ import { SidebarNav } from "@/components/sidebar-nav"
 import { Toaster } from "@/components/ui/toaster"
 import { HelpButton } from "@/components/help-button"
 import { OnboardingModal } from "@/components/onboarding-modal"
+import { DevToolsWidget } from "@/components/dev-tools-widget"
 import "./globals.css"
 
 // Updated fonts for warm, aspirational feel
@@ -48,6 +49,7 @@ export default function RootLayout({
         <main className="ml-64">{children}</main>
         <Toaster />
         <HelpButton />
+        <DevToolsWidget />
         <Analytics />
       </body>
     </html>

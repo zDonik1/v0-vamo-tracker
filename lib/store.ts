@@ -2,6 +2,7 @@
 
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
+import { now, currentDate } from "@/lib/time"
 
 export interface Evidence {
   id: string
@@ -120,7 +121,7 @@ const MOCK_CUSTOMERS: Omit<PotentialCustomer, "revealed">[] = [
 export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
-      startDate: Date.now(),
+      startDate: now(),
       streak: 0,
       lastCommitDate: null,
       pineapples: 0,
@@ -137,7 +138,7 @@ export const useAppStore = create<AppState>()(
 
       startChallenge: () => {
         set({
-          startDate: Date.now(),
+          startDate: now(),
           streak: 0,
           lastCommitDate: null,
           pineapples: 0,
@@ -148,7 +149,7 @@ export const useAppStore = create<AppState>()(
       },
 
       addEvidence: (evidence) => {
-        const today = new Date().toDateString()
+        const today = currentDate().toDateString()
         const state = get()
 
         // Check if already committed today
@@ -156,8 +157,8 @@ export const useAppStore = create<AppState>()(
 
         const newEvidence: Evidence = {
           ...evidence,
-          id: Date.now().toString(),
-          timestamp: Date.now(),
+          id: now().toString(),
+          timestamp: now(),
         }
 
         const pineappleReward = alreadyCommittedToday ? 2 : 12 // 10 for daily task + 2 for streak
@@ -176,7 +177,7 @@ export const useAppStore = create<AppState>()(
       addLead: (lead) => {
         const newLead: Lead = {
           ...lead,
-          id: Date.now().toString(),
+          id: now().toString(),
         }
         set((state) => ({
           leads: [...state.leads, newLead],
@@ -201,8 +202,8 @@ export const useAppStore = create<AppState>()(
 
       checkAndUpdateStreak: () => {
         const state = get()
-        const today = new Date().toDateString()
-        const yesterday = new Date(Date.now() - 86400000).toDateString()
+        const today = currentDate().toDateString()
+        const yesterday = new Date(now() - 86400000).toDateString()
 
         if (state.lastCommitDate !== today && state.lastCommitDate !== yesterday) {
           // Streak broken
@@ -236,7 +237,7 @@ export const useAppStore = create<AppState>()(
 
         if (customer && customer.revealed) {
           const newLead: Lead = {
-            id: Date.now().toString(),
+            id: now().toString(),
             name: customer.name,
             relationship: "dont-know",
             reason: customer.reason,
@@ -250,15 +251,6 @@ export const useAppStore = create<AppState>()(
 
       completeOnboarding: () => {
         set({ hasSeenOnboarding: true })
-      },
-
-      checkDailyTask: () => {
-        const state = get()
-        const today = new Date().toDateString()
-
-        if (state.lastCommitDate !== today) {
-          set({ dailyTaskCompleted: false })
-        }
       },
 
       reopenOnboarding: () => {

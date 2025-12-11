@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { useAppStore } from "@/lib/store"
+import { now, currentDate } from "@/lib/time"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -27,8 +28,7 @@ export default function DiaryPage() {
   const [content, setContent] = useState("")
   const [imageFile, setImageFile] = useState<string>("")
 
-  const today = new Date().toDateString()
-  const hasCommittedToday = lastCommitDate === today
+  const hasCommittedToday = lastCommitDate === currentDate().toDateString()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -40,7 +40,7 @@ export default function DiaryPage() {
     addEvidence({
       type: selectedType,
       content: imageFile || content,
-      date: new Date().toISOString(),
+      date: currentDate().toISOString(),
     })
 
     if (!wasAlreadyCompleted) {

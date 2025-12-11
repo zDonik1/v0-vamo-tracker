@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useAppStore } from "@/lib/store"
+import { now } from "@/lib/time"
 
 export function CountdownTimer() {
   const { startDate } = useAppStore()
@@ -12,8 +13,7 @@ export function CountdownTimer() {
 
     const calculateTimeLeft = () => {
       const endDate = startDate + 100 * 24 * 60 * 60 * 1000 // 100 days from start
-      const now = Date.now()
-      const difference = endDate - now
+      const difference = endDate - now()
 
       if (difference <= 0) {
         return { days: 0, hours: 0, minutes: 0, seconds: 0 }
