@@ -18,21 +18,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Plus, Trophy, CheckCircle2 } from "lucide-react"
-
-const relationshipLabels = {
-  "know-well": "Know them well",
-  "talked-once": "Talked once",
-  "dont-know": "Don't know them",
-}
-
-const stageLabels = {
-  "setup-call": "Set up call",
-  discovery: "Discovery call",
-  demo: "Demo",
-  pricing: "Pricing call",
-  secured: "Secured",
-  "did-not-close": "Did not close",
-}
+import { RelationshipBadge, StageBadge, relationshipLabels, stageLabels } from "@/components/lead-badges"
 
 export default function LeadsPage() {
   const { leads, addLead, updateLead } = useAppStore()
@@ -249,12 +235,18 @@ export default function LeadsPage() {
                     onValueChange={(value) => setFormData({ ...formData, relationship: value as Lead["relationship"] })}
                   >
                     <SelectTrigger id="relationship">
-                      <SelectValue />
+                      <RelationshipBadge relationship={formData.relationship} />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="know-well">Know them well</SelectItem>
-                      <SelectItem value="talked-once">Talked once</SelectItem>
-                      <SelectItem value="dont-know">Don't know them</SelectItem>
+                    <SelectContent className="border-2 shadow-xl">
+                      <SelectItem value="know-well">
+                        <RelationshipBadge relationship="know-well" />
+                      </SelectItem>
+                      <SelectItem value="talked-once">
+                        <RelationshipBadge relationship="talked-once" />
+                      </SelectItem>
+                      <SelectItem value="dont-know">
+                        <RelationshipBadge relationship="dont-know" />
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -277,15 +269,27 @@ export default function LeadsPage() {
                     onValueChange={(value) => setFormData({ ...formData, stage: value as Lead["stage"] })}
                   >
                     <SelectTrigger id="stage">
-                      <SelectValue />
+                      <StageBadge stage={formData.stage} />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="setup-call">Set up call</SelectItem>
-                      <SelectItem value="discovery">Discovery call</SelectItem>
-                      <SelectItem value="demo">Demo</SelectItem>
-                      <SelectItem value="pricing">Pricing call</SelectItem>
-                      <SelectItem value="secured">Secured</SelectItem>
-                      <SelectItem value="did-not-close">Did not close</SelectItem>
+                    <SelectContent className="border-2 shadow-xl">
+                      <SelectItem value="setup-call">
+                        <StageBadge stage="setup-call" />
+                      </SelectItem>
+                      <SelectItem value="discovery">
+                        <StageBadge stage="discovery" />
+                      </SelectItem>
+                      <SelectItem value="demo">
+                        <StageBadge stage="demo" />
+                      </SelectItem>
+                      <SelectItem value="pricing">
+                        <StageBadge stage="pricing" />
+                      </SelectItem>
+                      <SelectItem value="secured">
+                        <StageBadge stage="secured" />
+                      </SelectItem>
+                      <SelectItem value="did-not-close">
+                        <StageBadge stage="did-not-close" />
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -333,7 +337,7 @@ export default function LeadsPage() {
                   </div>
 
                   <div className="col-span-2">
-                    <span className="text-sm text-muted-foreground">{relationshipLabels[lead.relationship]}</span>
+                    <RelationshipBadge relationship={lead.relationship} />
                   </div>
 
                   <div className="col-span-4">
@@ -345,16 +349,28 @@ export default function LeadsPage() {
                       value={lead.stage}
                       onValueChange={(value) => updateLead(lead.id, { stage: value as Lead["stage"] })}
                     >
-                      <SelectTrigger className="h-9">
-                        <SelectValue />
+                      <SelectTrigger className="h-auto">
+                        <StageBadge stage={lead.stage} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="setup-call">Set up call</SelectItem>
-                        <SelectItem value="discovery">Discovery call</SelectItem>
-                        <SelectItem value="demo">Demo</SelectItem>
-                        <SelectItem value="pricing">Pricing call</SelectItem>
-                        <SelectItem value="secured">Secured ✅</SelectItem>
-                        <SelectItem value="did-not-close">Did not close</SelectItem>
+                        <SelectItem value="setup-call">
+                          <StageBadge stage="setup-call" />
+                        </SelectItem>
+                        <SelectItem value="discovery">
+                          <StageBadge stage="discovery" />
+                        </SelectItem>
+                        <SelectItem value="demo">
+                          <StageBadge stage="demo" />
+                        </SelectItem>
+                        <SelectItem value="pricing">
+                          <StageBadge stage="pricing" />
+                        </SelectItem>
+                        <SelectItem value="secured">
+                          <StageBadge stage="secured" />
+                        </SelectItem>
+                        <SelectItem value="did-not-close">
+                          <StageBadge stage="did-not-close" />
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
