@@ -2,7 +2,7 @@
 
 import { useAppStore } from "@/lib/store"
 import { Card } from "@/components/ui/card"
-import { FileText, ImageIcon, LinkIcon, Camera, Lightbulb } from "lucide-react"
+import { FileText, ImageIcon, LinkIcon, Lightbulb } from "lucide-react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 
@@ -10,7 +10,6 @@ const iconMap = {
   text: FileText,
   image: ImageIcon,
   link: LinkIcon,
-  screenshot: Camera,
   note: Lightbulb,
 }
 

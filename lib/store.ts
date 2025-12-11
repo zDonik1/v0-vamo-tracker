@@ -6,7 +6,7 @@ import { now, currentDate } from "@/lib/time"
 
 export interface Evidence {
   id: string
-  type: "text" | "image" | "link" | "screenshot" | "note"
+  type: "text" | "image" | "link" | "note"
   content: string
   date: string
   timestamp: number

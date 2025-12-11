@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { FileText, ImageIcon, LinkIcon, Camera, Lightbulb, Upload } from "lucide-react"
+import { FileText, ImageIcon, LinkIcon, Lightbulb, Upload } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast"
 
@@ -17,14 +17,13 @@ const evidenceTypes = [
   { type: "text" as const, label: "Text Note", icon: FileText },
   { type: "image" as const, label: "Image", icon: ImageIcon },
   { type: "link" as const, label: "Link", icon: LinkIcon },
-  { type: "screenshot" as const, label: "Screenshot", icon: Camera },
   { type: "note" as const, label: "Shower Thought", icon: Lightbulb },
 ]
 
 export default function DiaryPage() {
   const { addEvidence, lastCommitDate, dailyTaskCompleted, streak } = useAppStore()
   const { toast } = useToast()
-  const [selectedType, setSelectedType] = useState<"text" | "image" | "link" | "screenshot" | "note">("text")
+  const [selectedType, setSelectedType] = useState<"text" | "image" | "link" | "note">("text")
   const [content, setContent] = useState("")
   const [imageFile, setImageFile] = useState<string>("")
 
@@ -90,7 +89,7 @@ export default function DiaryPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-3">
                 <Label>Evidence Type</Label>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {evidenceTypes.map(({ type, label, icon: Icon }) => (
                     <button
                       key={type}
