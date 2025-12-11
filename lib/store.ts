@@ -161,8 +161,10 @@ export const useAppStore = create<AppState>()(
           timestamp: now(),
         }
 
-        const pineappleReward = alreadyCommittedToday ? 2 : 12 // 10 for daily task + 2 for streak
         const newStreak = alreadyCommittedToday ? state.streak : state.streak + 1
+
+        // Calculate pineapple reward: 10 base + 2 if streak exists (including the one we just incremented)
+        const pineappleReward = alreadyCommittedToday ? 0 : (10 + (newStreak > 1 ? 2 : 0))
 
         set((state) => ({
           evidence: [newEvidence, ...state.evidence],

@@ -22,7 +22,7 @@ const evidenceTypes = [
 ]
 
 export default function DiaryPage() {
-  const { addEvidence, lastCommitDate, dailyTaskCompleted } = useAppStore()
+  const { addEvidence, lastCommitDate, dailyTaskCompleted, streak } = useAppStore()
   const { toast } = useToast()
   const [selectedType, setSelectedType] = useState<"text" | "image" | "link" | "screenshot" | "note">("text")
   const [content, setContent] = useState("")
@@ -44,14 +44,18 @@ export default function DiaryPage() {
     })
 
     if (!wasAlreadyCompleted) {
+      const message = streak >= 1
+        ? "You earned 10 🍍 pineapples for today's evidence + 2 🍍 for your streak!"
+        : "You earned 10 🍍 pineapples for today's evidence!"
+
       toast({
         title: "Daily Task Complete!",
-        description: "You earned 10 🍍 pineapples for today's evidence + 2 🍍 for your streak!",
+        description: message,
       })
     } else {
       toast({
         title: "Evidence Added",
-        description: "You earned 2 🍍 pineapples for continuing to build!",
+        description: "Additional evidence saved to your library!",
       })
     }
 
