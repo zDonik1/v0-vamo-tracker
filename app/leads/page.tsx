@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   Dialog,
@@ -19,6 +18,7 @@ import {
 } from "@/components/ui/dialog"
 import { Plus, Trophy, CheckCircle2 } from "lucide-react"
 import { RelationshipBadge, StageBadge, relationshipLabels, stageLabels } from "@/components/lead-badges"
+import { AutoGrowTextarea } from "@/components/auto-grow-textarea"
 
 export default function LeadsPage() {
   const { leads, addLead, updateLead } = useAppStore()
@@ -30,7 +30,6 @@ export default function LeadsPage() {
     reason: "",
     stage: "setup-call" as Lead["stage"],
   })
-
   const securedLeads = leads.filter((l) => l.stage === "secured")
   const allSecured = securedLeads.length === 10
 
@@ -253,12 +252,11 @@ export default function LeadsPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="reason">Why are they a potential lead?</Label>
-                  <Textarea
+                  <AutoGrowTextarea
                     id="reason"
                     value={formData.reason}
                     onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
                     placeholder="What makes them a good fit for your product?"
-                    rows={3}
                   />
                 </div>
 

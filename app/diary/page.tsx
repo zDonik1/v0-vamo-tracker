@@ -6,12 +6,12 @@ import { useState } from "react"
 import { useAppStore } from "@/lib/store"
 import { now, currentDate } from "@/lib/time"
 import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { FileText, ImageIcon, LinkIcon, Lightbulb, Upload } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast"
+import { AutoGrowTextarea } from "@/components/auto-grow-textarea"
 
 const evidenceTypes = [
   { type: "text" as const, label: "Text Note", icon: FileText },
@@ -140,7 +140,7 @@ export default function DiaryPage() {
               ) : (
                 <div className="space-y-3">
                   <Label htmlFor="content">{selectedType === "link" ? "URL" : "Content"}</Label>
-                  <Textarea
+                  <AutoGrowTextarea
                     id="content"
                     placeholder={
                       selectedType === "link"
@@ -151,8 +151,7 @@ export default function DiaryPage() {
                     }
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    rows={6}
-                    className="resize-none"
+                    maxHeight="300px"
                   />
                 </div>
               )}
