@@ -60,7 +60,7 @@ export default function LibraryPage() {
             {filteredEvidence.map((item) => {
               const Icon = iconMap[item.type]
               return (
-                <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow py-0">
                   <div className="p-5 space-y-3">
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-2">
