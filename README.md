@@ -101,6 +101,8 @@ A development-only widget that appears in the bottom-right corner (purple wrench
 
 - **Time Travel**: Jump to any day (1-100) in the challenge to test features
 - **Fast Forward**: Skip to 5 seconds before the end of the challenge
+- **Next Day**: Advance exactly 1 day forward to test consecutive day mechanics
+- **Add Evidence**: Quickly add test evidence
 - **Data Reset**: Clear all localStorage and start fresh
 
 **📚 For detailed usage instructions, see [Dev Tools Documentation](docs/dev-tools.md)**
@@ -186,6 +188,9 @@ vamo/
 │   ├── onboarding-modal.tsx  # First-time user tutorial
 │   ├── dev-tools-widget.tsx  # Development time travel tools
 │   └── ui/                   # shadcn/ui components
+├── hooks/
+│   ├── use-gamification.ts   # Evidence upload with gamification logic
+│   └── use-toast.ts          # Toast notification system
 ├── lib/
 │   ├── store.ts              # Zustand state management
 │   └── time.ts               # Centralized time utilities with dev offset

@@ -4,14 +4,14 @@ import type React from "react"
 
 import { useState } from "react"
 import { useAppStore } from "@/lib/store"
-import { now, currentDate } from "@/lib/time"
+import { currentDate } from "@/lib/time"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { FileText, ImageIcon, LinkIcon, Lightbulb, Upload } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import { useToast } from "@/hooks/use-toast"
 import { AutoGrowTextarea } from "@/components/auto-grow-textarea"
+import { useAddEvidence } from "@/hooks/use-gamification"
 
 const evidenceTypes = [
   { type: "text" as const, label: "Text Note", icon: FileText },
@@ -21,8 +21,8 @@ const evidenceTypes = [
 ]
 
 export default function DiaryPage() {
-  const { addEvidence, lastCommitDate, dailyTaskCompleted, streak } = useAppStore()
-  const { toast } = useToast()
+  const { lastCommitDate } = useAppStore()
+  const addEvidence = useAddEvidence()
   const [selectedType, setSelectedType] = useState<"text" | "image" | "link" | "note">("text")
   const [content, setContent] = useState("")
   const [imageFile, setImageFile] = useState<string>("")
@@ -34,29 +34,7 @@ export default function DiaryPage() {
 
     if (!content.trim() && !imageFile) return
 
-    const wasAlreadyCompleted = dailyTaskCompleted
-
-    addEvidence({
-      type: selectedType,
-      content: imageFile || content,
-      date: currentDate().toISOString(),
-    })
-
-    if (!wasAlreadyCompleted) {
-      const message = streak >= 1
-        ? "You earned 10 🍍 pineapples for today's evidence + 2 🍍 for your streak!"
-        : "You earned 10 🍍 pineapples for today's evidence!"
-
-      toast({
-        title: "Daily Task Complete!",
-        description: message,
-      })
-    } else {
-      toast({
-        title: "Evidence Added",
-        description: "Additional evidence saved to your library!",
-      })
-    }
+    addEvidence(selectedType, imageFile || content)
 
     setContent("")
     setImageFile("")

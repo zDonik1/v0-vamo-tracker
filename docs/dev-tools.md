@@ -24,7 +24,13 @@ The widget allows you to manipulate the application's internal clock to test tim
 - **Behavior:**
   - Calculates the time offset needed to reach the specified day
   - Updates all time-dependent components immediately
-  - Triggers `checkAndUpdateStreak()` to recalculate streak and daily task status
+
+#### Next Day
+- **Button:** "⏩ Next Day"
+- **Behavior:**
+  - Advances time by exactly 1 day from the current simulated day
+  - Automatically updates the day input field
+  - Useful for quickly stepping through consecutive days to test daily mechanics
 
 #### Jump to End
 - **Button:** "⏭️ Jump to End (5s left)"
@@ -34,6 +40,11 @@ The widget allows you to manipulate the application's internal clock to test tim
   - Countdown timer will show approximately 0d : 0h : 0m : 5s
 
 ### 2. Data Management
+
+#### Add Evidence
+- **Button:** "➕ Add Evidence"
+- **Behavior:**
+  - Adds a text evidence entry with content "Test evidence added via dev tools"
 
 #### Clear All Data
 - **Button:** "Clear All Data" (red/destructive styling)

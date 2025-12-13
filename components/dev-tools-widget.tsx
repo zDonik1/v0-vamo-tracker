@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Wrench } from "lucide-react"
+import { useAddEvidence } from "@/hooks/use-gamification"
 
 // Constants
 const MS_PER_DAY = 24 * 60 * 60 * 1000
@@ -18,6 +19,7 @@ const STORAGE_KEYS = {
 
 export function DevToolsWidget() {
   const { startDate, checkAndUpdateStreak } = useAppStore()
+  const addEvidence = useAddEvidence()
   const [isVisible, setIsVisible] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date(now()))
   const [day, setDay] = useState("1")
@@ -66,6 +68,22 @@ export function DevToolsWidget() {
       localStorage.removeItem(STORAGE_KEYS.TIME_OFFSET)
       window.location.reload()
     }
+  }
+
+  const handleGoToNextDay = () => {
+    if (!startDate) return
+
+    const currentDay = getCurrentDay()
+    const nextDay = Math.min(currentDay + 1, CHALLENGE_DURATION_DAYS)
+    const targetDate = startDate + (nextDay - 1) * MS_PER_DAY
+    const offsetMs = targetDate - Date.now()
+
+    applyTimeOffset(offsetMs)
+    setDay(nextDay.toString())
+  }
+
+  const handleAddEvidence = () => {
+    addEvidence("text", "Test evidence added via dev tools")
   }
 
   // Effects
@@ -130,6 +148,23 @@ export function DevToolsWidget() {
           />
           <Button onClick={handleSetDay} size="sm" className="bg-purple-600 hover:bg-purple-700">
             Go to Day
+          </Button>
+        </div>
+        <div className="flex gap-2">
+          <Button
+            onClick={handleGoToNextDay}
+            variant="outline"
+            size="sm"
+            className="flex-1 h-8 text-xs"
+          >
+            ⏩ Next Day
+          </Button>
+          <Button
+            onClick={handleAddEvidence}
+            size="sm"
+            className="flex-1 h-8 text-xs bg-emerald-600 hover:bg-emerald-700"
+          >
+            ➕ Add Evidence
           </Button>
         </div>
         <Button
