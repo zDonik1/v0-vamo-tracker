@@ -49,6 +49,11 @@ Vamo is a motivational web app designed specifically for first-time founders wor
 - Filter and search through your progress
 - Export and share your journey
 
+### 🍍 Pineapple Rewards
+Pineapples are earned through daily logins, evidence uploads, and streak milestones. They can be spent to reveal potential customers.
+
+**📚 For detailed calculations, see [Pineapple Rewards Documentation](docs/pineapple-rewards.md)**
+
 ### 📊 Lead Conversion Probability
 
 Each lead shows a conversion probability that combines two factors:
@@ -193,8 +198,10 @@ vamo/
 │   └── use-toast.ts          # Toast notification system
 ├── lib/
 │   ├── store.ts              # Zustand state management
-│   └── time.ts               # Centralized time utilities with dev offset
+│   ├── time.ts               # Centralized time utilities with dev offset
+│   └── gamification.ts       # Gamification constants and reward calculations
 ├── docs/
+│   ├── pineapple-rewards.md  # Pineapple rewards system documentation
 │   ├── lead-conversion-probability.md  # Lead conversion calculation docs
 │   └── dev-tools.md          # Dev tools widget documentation
 └── public/

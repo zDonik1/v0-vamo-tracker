@@ -3,6 +3,7 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { now, currentDate } from "@/lib/time"
+import { calculateLoginBonus, calculateEvidenceCredits, getMilestoneReward } from "@/lib/gamification"
 
 export interface Evidence {
   id: string
@@ -35,6 +36,11 @@ interface AppState {
   lastCommitDate: string | null
   pineapples: number
 
+  // Gamification tracking
+  lastLoginDate: string | null
+  evidenceCountToday: number
+  claimedMilestones: number[] // Array of claimed milestone days (7, 30, 60, 100)
+
   // Evidence
   evidence: Evidence[]
 
@@ -63,8 +69,8 @@ interface AppState {
   revealCustomer: (id: string) => boolean
   addCustomerToLeads: (customerId: string) => void
   completeOnboarding: () => void
-  checkDailyTask: () => void
   reopenOnboarding: () => void
+  checkDailyLogin: () => number
 }
 
 const MOCK_CUSTOMERS: Omit<PotentialCustomer, "revealed">[] = [
@@ -125,6 +131,9 @@ export const useAppStore = create<AppState>()(
       streak: 0,
       lastCommitDate: null,
       pineapples: 0,
+      lastLoginDate: null,
+      evidenceCountToday: 0,
+      claimedMilestones: [],
       evidence: [],
       leads: [],
       potentialCustomers: MOCK_CUSTOMERS.map((c) => ({ ...c, revealed: false })),
@@ -142,6 +151,9 @@ export const useAppStore = create<AppState>()(
           streak: 0,
           lastCommitDate: null,
           pineapples: 0,
+          lastLoginDate: null,
+          evidenceCountToday: 0,
+          claimedMilestones: [],
           evidence: [],
           leads: [],
           potentialCustomers: MOCK_CUSTOMERS.map((c) => ({ ...c, revealed: false })),
@@ -162,15 +174,18 @@ export const useAppStore = create<AppState>()(
         }
 
         const newStreak = alreadyCommittedToday ? state.streak : state.streak + 1
-
-        // Calculate pineapple reward: 10 base + 2 if streak exists (including the one we just incremented)
-        const pineappleReward = alreadyCommittedToday ? 0 : (10 + (newStreak > 1 ? 2 : 0))
+        const milestoneBonus = getMilestoneReward(newStreak, state.claimedMilestones)
+        const totalReward = calculateEvidenceCredits(state.evidenceCountToday) + milestoneBonus
 
         set((state) => ({
           evidence: [newEvidence, ...state.evidence],
           lastCommitDate: today,
           streak: newStreak,
-          pineapples: state.pineapples + pineappleReward,
+          pineapples: state.pineapples + totalReward,
+          evidenceCountToday: state.evidenceCountToday + 1,
+          claimedMilestones: milestoneBonus > 0
+            ? [...state.claimedMilestones, newStreak]
+            : state.claimedMilestones,
           dailyTaskCompleted: true,
           findCustomersUnlocked: newStreak >= 10 ? true : state.findCustomersUnlocked,
         }))
@@ -213,8 +228,30 @@ export const useAppStore = create<AppState>()(
         }
 
         if (state.lastCommitDate !== today) {
-          set({ dailyTaskCompleted: false })
+          // New day - reset daily counters
+          set({
+            dailyTaskCompleted: false,
+            evidenceCountToday: 0,
+          })
         }
+      },
+
+      checkDailyLogin: () => {
+        const state = get()
+        const today = currentDate().toDateString()
+
+        if (state.lastLoginDate === today) return 0
+
+        // Calculate login bonus based on current day (streak + 1)
+        // The streak represents completed days, so we add 1 to get the current day number
+        const loginBonus = calculateLoginBonus(state.streak + 1)
+
+        set({
+          lastLoginDate: today,
+          pineapples: state.pineapples + loginBonus,
+        })
+
+        return loginBonus
       },
 
       revealCustomer: (id) => {

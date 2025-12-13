@@ -8,6 +8,7 @@ import { CountdownTimer } from "./countdown-timer"
 import { StreakCounter } from "./streak-counter"
 import { PineappleCounter } from "./pineapple-counter"
 import { useAppStore } from "@/lib/store"
+import { useProcessLoginBonus } from "@/hooks/use-gamification"
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
@@ -19,11 +20,16 @@ const navItems = [
 
 export function SidebarNav() {
   const pathname = usePathname()
-  const { findCustomersUnlocked, checkAndUpdateStreak } = useAppStore()
+  const { findCustomersUnlocked, checkAndUpdateStreak, hasSeenOnboarding } = useAppStore()
+  const checkLoginBonus = useProcessLoginBonus()
 
   useEffect(() => {
     checkAndUpdateStreak()
-  }, [checkAndUpdateStreak])
+    // Only give login bonus after user has completed onboarding
+    if (hasSeenOnboarding) {
+      checkLoginBonus()
+    }
+  }, [checkAndUpdateStreak, checkLoginBonus, hasSeenOnboarding])
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-card border-r border-border flex flex-col">

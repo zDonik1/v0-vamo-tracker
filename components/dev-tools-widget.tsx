@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Wrench } from "lucide-react"
-import { useAddEvidence } from "@/hooks/use-gamification"
+import { useAddEvidence, useProcessLoginBonus } from "@/hooks/use-gamification"
 
 // Constants
 const MS_PER_DAY = 24 * 60 * 60 * 1000
@@ -19,6 +19,7 @@ const STORAGE_KEYS = {
 
 export function DevToolsWidget() {
   const { startDate, checkAndUpdateStreak } = useAppStore()
+  const checkLoginBonus = useProcessLoginBonus()
   const addEvidence = useAddEvidence()
   const [isVisible, setIsVisible] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date(now()))
@@ -34,6 +35,7 @@ export function DevToolsWidget() {
   const applyTimeOffset = (offsetMs: number) => {
     setTimeOffset(offsetMs)
     checkAndUpdateStreak()
+    checkLoginBonus()
   }
 
   // Event handlers
