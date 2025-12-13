@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select"
 import {
   Dialog,
   DialogContent,
@@ -17,7 +17,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Plus, Trophy, CheckCircle2 } from "lucide-react"
-import { RelationshipBadge, StageBadge, relationshipLabels, stageLabels } from "@/components/lead-badges"
+import { RelationshipBadge, StageBadge } from "@/components/lead-badges"
 import { AutoGrowTextarea } from "@/components/auto-grow-textarea"
 
 export default function LeadsPage() {
@@ -138,21 +138,21 @@ export default function LeadsPage() {
         </div>
 
         {leads.length > 0 && (
-          <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
             <Card className="text-center">
-              <CardHeader className="pb-3">
+              <CardHeader>
                 <CardDescription className="text-xs">Win Rate</CardDescription>
                 <CardTitle className="text-3xl font-bold text-emerald-600">{statistics.winRate}%</CardTitle>
               </CardHeader>
             </Card>
             <Card className="text-center">
-              <CardHeader className="pb-3">
+              <CardHeader>
                 <CardDescription className="text-xs">Overall Conversion</CardDescription>
                 <CardTitle className="text-3xl font-bold text-blue-600">{statistics.overallConversionRate}%</CardTitle>
               </CardHeader>
             </Card>
             <Card className="text-center">
-              <CardHeader className="pb-3">
+              <CardHeader>
                 <CardDescription className="text-xs">Progress to Goal</CardDescription>
                 <CardTitle className="text-3xl font-bold text-purple-600">{statistics.goalProgress}%</CardTitle>
               </CardHeader>
@@ -207,7 +207,7 @@ export default function LeadsPage() {
                 Add New Lead
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-lg">
+            <DialogContent className="!max-w-[90%] md:!max-w-lg">
               <DialogHeader>
                 <DialogTitle>{editingLead ? "Edit Lead" : "Add New Lead"}</DialogTitle>
                 <DialogDescription>
@@ -308,12 +308,12 @@ export default function LeadsPage() {
           </Card>
         ) : (
           <div className="bg-card border border-border rounded-2xl overflow-hidden">
-            <div className="grid grid-cols-12 gap-4 px-6 py-3 bg-muted/50 border-b text-sm font-medium text-muted-foreground">
-              <div className="col-span-2">Name</div>
-              <div className="col-span-2">Relationship</div>
-              <div className="col-span-4">Reason</div>
-              <div className="col-span-3">Stage</div>
-              <div className="col-span-1 text-right">Conv %</div>
+            <div className="grid grid-cols-15 gap-4 px-6 py-3 bg-muted/50 border-b text-sm font-medium text-muted-foreground">
+              <div className="col-span-6 md:col-span-3">Name</div>
+              <div className="hidden md:block col-span-3">Relationship</div>
+              <div className="hidden md:block col-span-4">Reason</div>
+              <div className="col-span-6 md:col-span-3">Stage</div>
+              <div className="col-span-3 md:col-span-2 text-right">Conv %</div>
             </div>
 
             <div className="divide-y">
@@ -321,28 +321,28 @@ export default function LeadsPage() {
                 <div
                   key={lead.id}
                   onClick={() => handleEditLead(lead)}
-                  className={`grid grid-cols-12 gap-4 px-6 py-4 items-center transition-colors hover:bg-muted/30 cursor-pointer ${
+                  className={`grid grid-cols-15 gap-4 px-6 py-4 items-center transition-colors hover:bg-muted/30 cursor-pointer ${
                     lead.stage === "secured"
                       ? "bg-gradient-to-r from-emerald-50/50 to-teal-50/50 dark:from-emerald-950/30 dark:to-teal-950/30"
                       : ""
                   }`}
                 >
-                  <div className="col-span-2">
+                  <div className="col-span-6 md:col-span-3">
                     <div className="font-semibold flex items-center gap-2">
-                      {lead.name}
-                      {lead.stage === "secured" && <CheckCircle2 className="h-4 w-4 text-emerald-600" />}
+                      <span className="line-clamp-2">{lead.name}</span>
+                      {lead.stage === "secured" && <CheckCircle2 className="h-4 w-4 text-emerald-600 flex-shrink-0" />}
                     </div>
                   </div>
 
-                  <div className="col-span-2">
+                  <div className="hidden md:block col-span-3">
                     <RelationshipBadge relationship={lead.relationship} />
                   </div>
 
-                  <div className="col-span-4">
+                  <div className="hidden md:block col-span-4">
                     <p className="text-sm text-foreground line-clamp-2">{lead.reason}</p>
                   </div>
 
-                  <div className="col-span-3" onClick={(e) => e.stopPropagation()}>
+                  <div className="col-span-6 md:col-span-3" onClick={(e) => e.stopPropagation()}>
                     <Select
                       value={lead.stage}
                       onValueChange={(value) => updateLead(lead.id, { stage: value as Lead["stage"] })}
@@ -373,7 +373,7 @@ export default function LeadsPage() {
                     </Select>
                   </div>
 
-                  <div className="col-span-1 text-right">
+                  <div className="col-span-3 md:col-span-2 text-right">
                     {(() => {
                       const convProb = calculateConversionProbability(lead)
                       return (

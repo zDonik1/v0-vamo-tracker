@@ -78,7 +78,7 @@ export function OnboardingModal() {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-2xl p-0 gap-0 overflow-hidden">
+      <DialogContent className="!max-w-[90%] md:!max-w-2xl p-0 gap-0 overflow-hidden">
         <div className={`bg-gradient-to-br ${currentContent.gradient} p-12 text-white text-center`}>
           <div className="mb-6 flex justify-center">
             <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center">

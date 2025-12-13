@@ -46,7 +46,7 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <OnboardingModal />
         <SidebarNav />
-        <main className="ml-64">{children}</main>
+        <main className="lg:ml-64 pt-16 lg:pt-0">{children}</main>
         <Toaster />
         <HelpButton />
         <DevToolsWidget />

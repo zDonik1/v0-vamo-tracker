@@ -131,7 +131,7 @@ export default function LibraryPage() {
         <DialogContent className={
           selectedEvidence?.type === "image"
             ? "!max-w-[95vw] max-h-[95vh] overflow-y-auto p-2"
-            : "!max-w-3xl max-h-[80vh] overflow-y-auto"
+            : "!max-w-[90vw] md:!max-w-3xl max-h-[80vh] overflow-y-auto"
         }>
           {selectedEvidence && (
             <>

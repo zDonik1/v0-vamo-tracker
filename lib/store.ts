@@ -31,7 +31,7 @@ export interface PotentialCustomer {
 
 interface AppState {
   // Challenge data
-  startDate: number | null
+  startDate: number
   streak: number
   lastCommitDate: string | null
   pineapples: number

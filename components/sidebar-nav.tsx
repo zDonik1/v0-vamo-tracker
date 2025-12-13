@@ -2,8 +2,8 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useEffect } from "react"
-import { Home, BookOpen, Library, Users, Search, User } from "lucide-react"
+import { useEffect, useState } from "react"
+import { Home, BookOpen, Library, Users, Search, User, Menu } from "lucide-react"
 import { CountdownTimer } from "./countdown-timer"
 import { StreakCounter } from "./streak-counter"
 import { PineappleCounter } from "./pineapple-counter"
@@ -22,6 +22,7 @@ export function SidebarNav() {
   const pathname = usePathname()
   const { findCustomersUnlocked, checkAndUpdateStreak, hasSeenOnboarding } = useAppStore()
   const checkLoginBonus = useProcessLoginBonus()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     checkAndUpdateStreak()
@@ -31,8 +32,57 @@ export function SidebarNav() {
     }
   }, [checkAndUpdateStreak, checkLoginBonus, hasSeenOnboarding])
 
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false)
+  }, [pathname])
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isMobileMenuOpen])
+
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-card border-r border-border flex flex-col">
+    <>
+      {/* Mobile Header */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-card border-b border-border z-40 flex items-center justify-between px-4">
+        {!isMobileMenuOpen && (
+          <button
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="p-2 hover:bg-accent rounded-lg transition-colors"
+            aria-label="Open menu"
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+        )}
+        {isMobileMenuOpen && <div className="w-10" />}
+        <Link href="/" className="text-2xl font-bold font-serif text-foreground">
+          Vamo
+        </Link>
+        <div className="w-10" /> {/* Spacer for visual balance */}
+      </div>
+
+      {/* Mobile Overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`
+        fixed left-0 top-0 h-screen w-64 bg-card border-r border-border flex flex-col z-50 transition-transform duration-300
+        lg:translate-x-0
+        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+      `}>
       {/* Logo */}
       <div className="p-6 border-b border-border">
         <Link href="/" className="text-3xl font-bold font-serif text-foreground">
@@ -88,5 +138,6 @@ export function SidebarNav() {
         </div>
       </div>
     </aside>
+    </>
   )
 }

@@ -1,9 +1,12 @@
 "use client"
 
 import { useAppStore } from "@/lib/store"
+import { useEffect, useRef, useState } from "react"
 
 export function EvidenceGrid() {
   const { evidence, startDate } = useAppStore()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [columns, setColumns] = useState(20)
 
   // Generate grid for 100 days
   const days = Array.from({ length: 100 }, (_, i) => {
@@ -21,9 +24,39 @@ export function EvidenceGrid() {
     return "bg-emerald-600 dark:bg-emerald-500"
   }
 
+  useEffect(() => {
+    const updateColumns = () => {
+      if (!containerRef.current) return
+
+      const containerWidth = containerRef.current.offsetWidth
+      const cellSize = 12
+      const gap = 6
+
+      const width20 = (20 * cellSize) + (19 * gap)
+      const width10 = (10 * cellSize) + (9 * gap)
+
+      // Choose columns based on what fits: 20, 10, or 5
+      let newColumns = 5
+      if (containerWidth >= width20) {
+        newColumns = 20
+      } else if (containerWidth >= width10) {
+        newColumns = 10
+      }
+
+      setColumns(newColumns)
+    }
+
+    updateColumns()
+    window.addEventListener('resize', updateColumns)
+    return () => window.removeEventListener('resize', updateColumns)
+  }, [])
+
   return (
-    <div className="w-full overflow-x-auto">
-      <div className="inline-grid grid-cols-20 gap-1.5 min-w-max p-1">
+    <div ref={containerRef} className="w-full">
+      <div
+        className="grid gap-1.5"
+        style={{ gridTemplateColumns: `repeat(${columns}, 12px)` }}
+      >
         {days.map((day, i) => (
           <div
             key={i}
