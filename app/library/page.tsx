@@ -5,6 +5,14 @@ import { Card } from "@/components/ui/card"
 import { FileText, ImageIcon, LinkIcon, Lightbulb } from "lucide-react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import type { Evidence } from "@/lib/store"
 
 const iconMap = {
   text: FileText,
@@ -16,8 +24,23 @@ const iconMap = {
 export default function LibraryPage() {
   const { evidence } = useAppStore()
   const [filter, setFilter] = useState<string>("all")
+  const [selectedEvidence, setSelectedEvidence] = useState<Evidence | null>(null)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const filteredEvidence = filter === "all" ? evidence : evidence.filter((e) => e.type === filter)
+
+  const handleOpenDialog = (item: Evidence) => {
+    setSelectedEvidence(item)
+    setIsDialogOpen(true)
+  }
+
+  const handleCloseDialog = (open: boolean) => {
+    if (!open) {
+      setIsDialogOpen(false)
+      // Delay clearing the content until after the animation completes
+      setTimeout(() => setSelectedEvidence(null), 200)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
@@ -60,7 +83,11 @@ export default function LibraryPage() {
             {filteredEvidence.map((item) => {
               const Icon = iconMap[item.type]
               return (
-                <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow py-0">
+                <Card
+                  key={item.id}
+                  className="overflow-hidden hover:shadow-lg transition-shadow py-0 cursor-pointer"
+                  onClick={() => handleOpenDialog(item)}
+                >
                   <div className="p-5 space-y-3">
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-2">
@@ -83,7 +110,8 @@ export default function LibraryPage() {
                         href={item.content}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-emerald-600 dark:text-emerald-400 hover:underline break-all"
+                        className="text-sm text-emerald-600 dark:text-emerald-400 hover:underline break-all line-clamp-2 block"
+                        onClick={(e) => e.stopPropagation()}
                       >
                         {item.content}
                       </a>
@@ -97,6 +125,64 @@ export default function LibraryPage() {
           </div>
         )}
       </div>
+
+      {/* Evidence Detail Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
+        <DialogContent className={
+          selectedEvidence?.type === "image"
+            ? "!max-w-[95vw] max-h-[95vh] overflow-y-auto p-2"
+            : "!max-w-3xl max-h-[80vh] overflow-y-auto"
+        }>
+          {selectedEvidence && (
+            <>
+              <DialogHeader>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+                    {(() => {
+                      const Icon = iconMap[selectedEvidence.type]
+                      return <Icon className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                    })()}
+                  </div>
+                  <div>
+                    <DialogTitle className="capitalize">{selectedEvidence.type} Evidence</DialogTitle>
+                    <DialogDescription>
+                      {new Date(selectedEvidence.date).toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </DialogDescription>
+                  </div>
+                </div>
+              </DialogHeader>
+
+              <div className="mt-4">
+                {selectedEvidence.type === "image" ? (
+                  <img
+                    src={selectedEvidence.content || "/placeholder.svg"}
+                    alt="Evidence"
+                    className="w-full h-auto max-h-[85vh] object-contain rounded-lg"
+                  />
+                ) : selectedEvidence.type === "link" ? (
+                  <div>
+                    <a
+                      href={selectedEvidence.content}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-emerald-600 dark:text-emerald-400 hover:underline break-all"
+                    >
+                      {selectedEvidence.content}
+                    </a>
+                  </div>
+                ) : (
+                  <p className="text-foreground leading-relaxed whitespace-pre-wrap">{selectedEvidence.content}</p>
+                )}
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
